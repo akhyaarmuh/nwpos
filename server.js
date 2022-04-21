@@ -52,3 +52,8 @@ app.listen(port, () => {
   open(`http://localhost:${process.env.PORT}`, { app: "chrome" });
   console.log("App started");
 });
+
+// TOKEN=54d6h465sx4hyf6d854hzx6846h854854dfx6hdz4
+// PORT=3000
+// MONGODB_URI= mongodb://127.0.0.1:27017/nwpos
+// API_VERSION=api/v1
