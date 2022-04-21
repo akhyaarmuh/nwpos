@@ -53,6 +53,8 @@ app.listen(port, () => {
   console.log("App started");
 });
 
+// INI ADALAH ENVIRONMENT .ENV
+
 // TOKEN=54d6h465sx4hyf6d854hzx6846h854854dfx6hdz4
 // PORT=3000
 // MONGODB_URI= mongodb://127.0.0.1:27017/nwpos
