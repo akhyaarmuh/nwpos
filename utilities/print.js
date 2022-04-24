@@ -15,9 +15,9 @@ const line = (count) => {
 const printDetail = ({ qty, price, total }) => {
   let str = "";
   let space = "";
-  str = toRupiah(qty) + " × " + toRupiah(price);
+  str = toRupiah(qty) + " x " + toRupiah(price);
 
-  for (let i = 0; i < 31 - (str.length + toRupiah(total).length); i++) {
+  for (let i = 0; i < 32 - (str.length + toRupiah(total).length); i++) {
     space = space + ` `;
   }
   return str + space + toRupiah(total);
