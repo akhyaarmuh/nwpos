@@ -117,6 +117,53 @@ export const getProductByBarcode = async (req, res) => {
   }
 };
 
+export const getProductByBarcodeBuy = async (req, res) => {
+  try {
+    let product = await Product.findOne({
+      barcode: req.params.barcode,
+    }).populate("category units");
+    if (!product)
+      return res.status(404).json({ message: "Produk tidak ditemukan" });
+
+    const units = product.units.map((unt) => ({
+      value: unt._id,
+      label: unt.name,
+    }));
+
+    product = {
+      _id: product._id,
+      barcode: product.barcode,
+      name: product.name,
+      category: product.category.name,
+      units,
+      defaultUnit: units.find(
+        (unt) =>
+          unt.label ===
+          getKeyByValue(product.unit, findValueInObject(product.unit, "min"))
+      ),
+      stock: product.stock,
+      unit: product.unit,
+      price: product.price,
+      salePrice: product.salePrice,
+      priceSelected: findValueInObject(product.price, "min"),
+      qty: 1,
+      total: findValueInObject(product.price, "min"),
+      unitSelected: product.units[0].name,
+      typeSale: "price",
+      limitStock: product.stock,
+      modal: product.modal,
+      desc: product.desc,
+      unitBuy: getKeyByValue(
+        product.unit,
+        findValueInObject(product.unit, "max")
+      ),
+    };
+    res.status(200).json({ data: product });
+  } catch (error) {
+    res.status(500).json({ message: error.message || "Internal server error" });
+  }
+};
+
 export const updateProductById = async (req, res) => {
   const barcode = req.body.barcode;
   if (barcode) {

@@ -3,6 +3,7 @@ import {
   createProduct,
   getAllProduct,
   getProductByBarcode,
+  getProductByBarcodeBuy,
   updateProductById,
   deleteProductById,
   updateStockById,
@@ -11,6 +12,7 @@ const route = express.Router();
 
 route.post("/", createProduct);
 route.get("/", getAllProduct);
+route.get("/buy/:barcode", getProductByBarcodeBuy);
 route.get("/:barcode", getProductByBarcode);
 route.patch("/update-stock/:id", updateStockById);
 route.patch("/:id", updateProductById);
