@@ -143,7 +143,7 @@ export const printStruk = async ({
         printer.text(footer.trim());
       });
 
-      printer.cashdraw().cut().close();
+      printer.cut().cashdraw().close();
     });
   } catch (error) {
     throw error;
