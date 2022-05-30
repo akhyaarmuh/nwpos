@@ -1,29 +1,3 @@
-export const findValueInObject = (obj, select) => {
-  const arr = Object.values(obj);
-  const max = Math.max(...arr);
-  const min = Math.min(...arr);
-  if (select === "max") {
-    return max;
-  } else {
-    return min;
-  }
-};
-
-export const toRupiah = (subject) => {
-  if (subject === null) return "";
-
-  if (subject === undefined) return "0";
-
-  const rupiah = subject.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
-  return `${rupiah}`;
-};
-
-export const checkIsUsed = async (model, key, _id) => {
-  const used = await model.findOne({ [key]: _id });
-  if (used) return true;
-  return false;
-};
-
 export const addZero = (numb) => {
   const number = Number(numb);
   if (isNaN(number)) return "0";
@@ -48,11 +22,13 @@ export const getDateYesterday = () => {
   )} ${yesterday.getMonth()} ${yesterday.getFullYear()}`;
 };
 
-export const getTime = () => {
-  const date = new Date();
-  return `${addZero(date.getHours())}:${addZero(date.getMinutes())}:${addZero(
-    date.getSeconds()
-  )}`;
+export const toRupiah = (subject) => {
+  // if (subject === null) return "";
+
+  // if (subject === undefined) return "0";
+
+  const rupiah = subject.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+  return `${rupiah}`;
 };
 
 export const displayDate = (date) => {
@@ -74,6 +50,13 @@ export const displayDate = (date) => {
   return `${splited[0]} ${months[Number(splited[1])]} ${splited[2]}`;
 };
 
-export const getKeyByValue = (object, value) => {
-  return Object.keys(object).find((key) => object[key] === value);
+export const findValueInObject = (obj, select) => {
+  const arr = Object.values(obj);
+  const max = Math.max(...arr);
+  const min = Math.min(...arr);
+  if (select === "max") {
+    return max;
+  } else {
+    return min;
+  }
 };

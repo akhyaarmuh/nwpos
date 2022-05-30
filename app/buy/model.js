@@ -5,6 +5,7 @@ const buySchema = new mongoose.Schema(
     supplier: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Supplier",
+      // required: [true, "Agen harus diisi"],
     },
     cart: [
       {

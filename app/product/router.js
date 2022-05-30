@@ -1,21 +1,21 @@
 import express from "express";
 import {
-  createProduct,
-  getAllProduct,
   getProductByBarcode,
-  getProductByBarcodeBuy,
-  updateProductById,
+  getAllProduct,
+  createProduct,
   deleteProductById,
-  updateStockById,
+  updateProductById,
+  // getProductByBarcodeBuy,
+  // updateStockById,
 } from "./controller.js";
 const route = express.Router();
 
-route.post("/", createProduct);
-route.get("/", getAllProduct);
-route.get("/buy/:barcode", getProductByBarcodeBuy);
 route.get("/:barcode", getProductByBarcode);
-route.patch("/update-stock/:id", updateStockById);
-route.patch("/:id", updateProductById);
+route.get("/", getAllProduct);
+route.post("/", createProduct);
 route.delete("/:id", deleteProductById);
+route.patch("/:id", updateProductById);
+// route.get("/buy/:barcode", getProductByBarcodeBuy);
+// route.patch("/update-stock/:id", updateStockById);
 
 export default route;

@@ -1,22 +1,22 @@
 import express from "express";
 import {
-  createSale,
   getAllSale,
+  createSale,
   getSaleById,
   updateSaleById,
   deleteSaleById,
-  payCredit,
-  getDashboard,
+  // payCredit,
+  // getDashboard,
 } from "./controller.js";
 
 const route = express.Router();
 
-route.post("/", createSale);
 route.get("/", getAllSale);
-route.get("/dashboard", getDashboard);
+route.post("/", createSale);
 route.get("/:id", getSaleById);
-route.patch("/pay/:id", payCredit);
 route.patch("/:id", updateSaleById);
 route.delete("/:id", deleteSaleById);
+// route.get("/dashboard", getDashboard);
+// route.patch("/pay/:id", payCredit);
 
 export default route;

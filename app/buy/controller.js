@@ -1,53 +1,58 @@
 import Buy from "./model.js";
-import Product from "../product/model.js";
-import { findValueInObject, getDate, getTime } from "../../utilities/index.js";
-
-const addStock = (cart) => {
-  cart.forEach(async (product) => {
-    const pro = await Product.findById(product._id);
-    if (!pro) return;
-
-    const stock = pro.stock + product.qty * findValueInObject(pro.unit, "max");
-    const allPrice = pro.modal * pro.stock + product.total;
-    const modal = Math.ceil(allPrice / stock);
-
-    await Product.findByIdAndUpdate(product._id, { stock, modal });
-  });
-};
+import { updateStock } from "../sale/controller.js";
 
 export const createBuy = async (req, res) => {
   const payload = req.body;
-  payload.time = getTime();
-  payload.date = getDate();
 
-  const newBuy = new Buy(req.body);
   try {
+    const newBuy = new Buy(payload);
     await newBuy.save();
     res.sendStatus(201);
-    addStock(req.body.cart);
+
+    updateStock(payload.cart, "add");
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
   }
 };
 
 export const getAllBuy = async (req, res) => {
+  const limit = Number(req.query.limit) || 20;
+  const page = Number(req.query.page) || 0;
+
   try {
+    let allPage = await Buy.find();
+    allPage = Math.ceil(allPage.length / limit) - 1;
     const buys = await Buy.find()
       .populate("supplier")
       .sort("-createdAt")
-      .select("date time supplier debt  total");
-    res.status(200).json({ data: buys });
+      .limit(limit)
+      .skip(limit * page);
+
+    const prev = page === 0 ? null : (page - 1).toString();
+    const next = page + 1 > allPage ? null : (page + 1).toString();
+    res.status(200).json({ data: buys, pages: { prev, next, page } });
+  } catch (error) {
+    res.status(500).json({ message: error.message || "Internal server error" });
+  }
+};
+
+export const getBuyById = async (req, res) => {
+  try {
+    const buy = await Buy.findById(req.params.id).populate("supplier");
+
+    if (!buy) return res.sendStatus(404);
+
+    res.status(200).json({ data: buy });
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
   }
 };
 
 export const updateBuyById = async (req, res) => {
-  try {
-    const buy = await Buy.findOne({ _id: req.params.id });
-    const debt = req.body.pay >= buy.debt ? 0 : buy.debt - req.body.pay;
+  const payload = req.body;
 
-    await Buy.findByIdAndUpdate(req.params.id, { debt });
+  try {
+    await Buy.findOneAndUpdate({ _id: req.params.id }, payload);
     res.sendStatus(200);
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
@@ -56,7 +61,7 @@ export const updateBuyById = async (req, res) => {
 
 export const deleteBuyById = async (req, res) => {
   try {
-    await Buy.findByIdAndDelete(req.params.id);
+    await Buy.findOneAndDelete({ _id: req.params.id });
     res.sendStatus(200);
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });

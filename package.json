@@ -1,11 +1,12 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "server NW Cashier",
+  "name": "server-nwpos",
+  "version": "2.0.0",
+  "description": "server nwpos",
   "type": "module",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
     "dev": "nodemon server.js"
   },
   "keywords": [

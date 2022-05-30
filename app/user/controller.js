@@ -18,8 +18,8 @@ const createAdmin = async (req, res) => {
   const newStore = new Store({
     name: "Toko",
     city: "Kota",
-    noHp: "082354566666",
-    address: "Alamat",
+    noHp: "012345678910",
+    address: "Alamat, desa, rt, rw",
     footer: "Pesan nota",
   });
 
@@ -82,8 +82,8 @@ export const login = async (req, res) => {
 
     const _id = user._id;
     const name = user.name;
-    const role = user.role;
     const store = stores[0].name;
+    const role = user.role;
     const token = jwt.sign({ _id, name, store, role }, process.env.TOKEN, {
       expiresIn: "1d",
     });
@@ -109,13 +109,17 @@ export const verifyLogin = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-  const token = req.cookies.token;
-  if (!token) return res.sendStatus(401);
-  const user = await User.findOne({ token });
-  if (!user) return res.sendStatus(403);
-  await User.findOneAndUpdate({ _id: user._id }, { token: null });
-  res.clearCookie("token");
-  res.sendStatus(200);
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.sendStatus(401);
+    const user = await User.findOne({ token });
+    if (!user) return res.sendStatus(403);
+    await User.findOneAndUpdate({ _id: user._id }, { token: null });
+    res.clearCookie("token");
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(500).json({ message: error.message || "internal server error" });
+  }
 };
 
 export const getUserById = async (req, res) => {
@@ -137,6 +141,10 @@ export const updateUserById = async (req, res) => {
     if (!matchPassword) {
       return res.status(404).json({ message: "Katasandi salah" });
     }
+
+    const isUsernameUsed = await User.findOne({ username: payload.username });
+    if (isUsernameUsed && isUsernameUsed._id.toString() !== req.params.id)
+      return res.status(400).json({ message: "Username sudah digunakan" });
 
     if (newPassword) {
       const salt = await bcrypt.genSalt();
