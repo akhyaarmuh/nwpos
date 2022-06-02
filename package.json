@@ -21,6 +21,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "escpos": "^3.0.0-alpha.6",
+    "escpos-screen": "^3.0.0-alpha.6",
+    "escpos-serialport": "^3.0.0-alpha.4",
     "escpos-usb": "^3.0.0-alpha.4",
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",

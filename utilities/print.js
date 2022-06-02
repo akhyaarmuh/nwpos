@@ -50,9 +50,9 @@ const printHeader = (printer, store, date, time) => {
 const printDetail = ({ qty, price, total }) => {
   let str = "";
   let space = "";
-  str = toRupiah(qty) + " × " + toRupiah(price);
+  str = toRupiah(qty) + " X " + toRupiah(price);
 
-  for (let i = 0; i < 31 - (str.length + toRupiah(total).length); i++) {
+  for (let i = 0; i < 32 - (str.length + toRupiah(total).length); i++) {
     space = space + ` `;
   }
   return str + space + toRupiah(total);

@@ -84,9 +84,16 @@ export const login = async (req, res) => {
     const name = user.name;
     const store = stores[0].name;
     const role = user.role;
-    const token = jwt.sign({ _id, name, store, role }, process.env.TOKEN, {
-      expiresIn: "1d",
-    });
+    const port = stores[0].port;
+    const line1 = stores[0].line1;
+    const line2 = stores[0].line2;
+    const token = jwt.sign(
+      { _id, name, store, role, port, line1, line2 },
+      process.env.TOKEN,
+      {
+        expiresIn: "1d",
+      }
+    );
     await User.findOneAndUpdate({ _id }, { token });
     res.cookie("token", token, {
       httpOnly: true,

@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import "./config/Database.js";
 
 import handlePrint from "./utilities/print.js";
+import handleScreen from "./utilities/screen.js";
 import buyRouter from "./app/buy/router.js";
 import categoryRouter from "./app/category/router.js";
 import customerRouter from "./app/customer/router.js";
@@ -43,6 +44,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(dirname, "client", "build")));
 
 app.post(`/${apiVersion}/print`, handlePrint);
+app.post(`/${apiVersion}/screen`, handleScreen);
 app.use(`/${apiVersion}/buy`, buyRouter);
 app.use(`/${apiVersion}/category`, categoryRouter);
 app.use(`/${apiVersion}/customer`, customerRouter);
@@ -74,4 +76,4 @@ app.listen(port, ip.address(), () => {
 // TOKEN=54d6h465sx4hyf6d854hzx6846h854854dfx6hdz4
 // PORT=3000
 // MONGODB_URI= mongodb://127.0.0.1:27017/nwpos
-// API_VERSION=api/v1
+// API_VERSION=api/v2

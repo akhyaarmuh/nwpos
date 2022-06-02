@@ -4,7 +4,7 @@ import User from "../user/model.js";
 
 export const getStore = async (req, res) => {
   try {
-    const store = await Store.find().select("name city address noHp footer");
+    const store = await Store.find();
     res.status(200).json({ data: store[0] });
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
