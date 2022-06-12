@@ -11,4 +11,4 @@ try {
   }
 }
 
-export default mongoose.connection;
+// export default mongoose.connection;

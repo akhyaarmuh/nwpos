@@ -22,9 +22,6 @@ const storeSchema = new mongoose.Schema(
       type: String,
       required: [true],
     },
-    port: {
-      type: String,
-    },
     line1: {
       type: String,
       maxlength: 20,

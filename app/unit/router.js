@@ -8,8 +8,8 @@ import {
 
 const route = express.Router();
 
-route.get("/", getAllUnit);
 route.post("/", createUnit);
+route.get("/", getAllUnit);
 route.patch("/:id", updateUnitById);
 route.delete("/:id", deleteUnitById);
 

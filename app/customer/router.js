@@ -5,6 +5,7 @@ import {
   updateCustomerById,
   deleteCustomerById,
 } from "./controller.js";
+
 const route = express.Router();
 
 route.get("/", getAllCustomer);

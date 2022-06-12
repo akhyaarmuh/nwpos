@@ -8,9 +8,9 @@ import {
 
 const route = express.Router();
 
-route.get("/", getAllCategory);
-route.delete("/:id", deleteCategoryById);
 route.post("/", createCategory);
+route.get("/", getAllCategory);
 route.patch("/:id", updateCategoryById);
+route.delete("/:id", deleteCategoryById);
 
 export default route;

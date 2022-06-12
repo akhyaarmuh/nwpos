@@ -1,15 +1,30 @@
 {
   "files": {
-    "main.css": "/static/css/main.03013d48.css",
-    "main.js": "/static/js/main.1cc8c1e9.js",
+    "main.css": "/static/css/main.c4dd3c88.css",
+    "main.js": "/static/js/main.b7c2c30b.js",
+    "static/media/Nunito-LightItalic.ttf": "/static/media/Nunito-LightItalic.f25a1c77ffdb2e2b7abe.ttf",
+    "static/media/Nunito-MediumItalic.ttf": "/static/media/Nunito-MediumItalic.ea257c8af71fb8772138.ttf",
+    "static/media/Nunito-Italic.ttf": "/static/media/Nunito-Italic.9ee37d588bccc2fa9f08.ttf",
+    "static/media/Nunito-ExtraBoldItalic.ttf": "/static/media/Nunito-ExtraBoldItalic.9d803af05d27f4536440.ttf",
+    "static/media/Nunito-SemiBoldItalic.ttf": "/static/media/Nunito-SemiBoldItalic.992c36600ffb4161d1bc.ttf",
+    "static/media/Nunito-BoldItalic.ttf": "/static/media/Nunito-BoldItalic.f17b6ee22e84c413cb84.ttf",
+    "static/media/Nunito-ExtraLightItalic.ttf": "/static/media/Nunito-ExtraLightItalic.6ca6ddb8084d337d7e7b.ttf",
+    "static/media/Nunito-BlackItalic.ttf": "/static/media/Nunito-BlackItalic.c4ccac53692329b364fd.ttf",
+    "static/media/Nunito-Medium.ttf": "/static/media/Nunito-Medium.4a2f2bc0b0dcd70052e3.ttf",
+    "static/media/Nunito-Light.ttf": "/static/media/Nunito-Light.effec7cd6b38cd8af17f.ttf",
     "static/media/Nunito-Regular.ttf": "/static/media/Nunito-Regular.bedc35fb703c0b2d1fd5.ttf",
+    "static/media/Nunito-SemiBold.ttf": "/static/media/Nunito-SemiBold.35622b703663ab9a0246.ttf",
+    "static/media/Nunito-Bold.ttf": "/static/media/Nunito-Bold.d5395e91ba6695bfdcb3.ttf",
+    "static/media/Nunito-ExtraBold.ttf": "/static/media/Nunito-ExtraBold.7a1db8e31dfc53e9af50.ttf",
+    "static/media/Nunito-Black.ttf": "/static/media/Nunito-Black.0184cda5b38ee869cd39.ttf",
+    "static/media/Nunito-ExtraLight.ttf": "/static/media/Nunito-ExtraLight.c8e6de987d8be9555f23.ttf",
     "static/media/bg-login.png": "/static/media/bg-login.5397654d8558ea38ab70.png",
     "index.html": "/index.html",
-    "main.03013d48.css.map": "/static/css/main.03013d48.css.map",
-    "main.1cc8c1e9.js.map": "/static/js/main.1cc8c1e9.js.map"
+    "main.c4dd3c88.css.map": "/static/css/main.c4dd3c88.css.map",
+    "main.b7c2c30b.js.map": "/static/js/main.b7c2c30b.js.map"
   },
   "entrypoints": [
-    "static/css/main.03013d48.css",
-    "static/js/main.1cc8c1e9.js"
+    "static/css/main.c4dd3c88.css",
+    "static/js/main.b7c2c30b.js"
   ]
 }

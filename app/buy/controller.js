@@ -1,5 +1,18 @@
 import Buy from "./model.js";
-import { updateStock } from "../sale/controller.js";
+import Product from "../product/model.js";
+import { getDate } from "../../utilities/index.js";
+
+const inputStock = (cart) => {
+  cart.forEach(async (pro) => {
+    const product = await Product.findById(pro._id);
+    const allStock = product.stock + pro.qty * product.unit[pro.unit];
+    const allPrice = product.stock * product.modal + pro.total;
+    await Product.findByIdAndUpdate(pro._id, {
+      stock: allStock,
+      modal: Math.ceil(allPrice / allStock),
+    });
+  });
+};
 
 export const createBuy = async (req, res) => {
   const payload = req.body;
@@ -9,7 +22,7 @@ export const createBuy = async (req, res) => {
     await newBuy.save();
     res.sendStatus(201);
 
-    updateStock(payload.cart, "add");
+    inputStock(payload.cart);
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
   }
@@ -26,7 +39,8 @@ export const getAllBuy = async (req, res) => {
       .populate("supplier")
       .sort("-createdAt")
       .limit(limit)
-      .skip(limit * page);
+      .skip(limit * page)
+      .select("supplier cart date time total debt payHistory");
 
     const prev = page === 0 ? null : (page - 1).toString();
     const next = page + 1 > allPage ? null : (page + 1).toString();
@@ -48,17 +62,6 @@ export const getBuyById = async (req, res) => {
   }
 };
 
-export const updateBuyById = async (req, res) => {
-  const payload = req.body;
-
-  try {
-    await Buy.findOneAndUpdate({ _id: req.params.id }, payload);
-    res.sendStatus(200);
-  } catch (error) {
-    res.status(500).json({ message: error.message || "Internal server error" });
-  }
-};
-
 export const deleteBuyById = async (req, res) => {
   try {
     await Buy.findOneAndDelete({ _id: req.params.id });
@@ -67,3 +70,30 @@ export const deleteBuyById = async (req, res) => {
     res.status(500).json({ message: error.message || "Internal server error" });
   }
 };
+
+export const payCreditBuyById = async (req, res) => {
+  const value = req.body.pay;
+  const date = getDate();
+  try {
+    const buy = await Buy.findById(req.params.id);
+    const debt = buy.debt - value;
+    const payHistory = buy.payHistory;
+    payHistory.push({ date, value });
+
+    await Buy.findByIdAndUpdate(req.params.id, { debt, payHistory });
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(500).json({ message: error.message || "Internal server error" });
+  }
+};
+
+// export const updateBuyById = async (req, res) => {
+//   const payload = req.body;
+
+//   try {
+//     await Buy.findOneAndUpdate({ _id: req.params.id }, payload);
+//     res.sendStatus(200);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message || "Internal server error" });
+//   }
+// };

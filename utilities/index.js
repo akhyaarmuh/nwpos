@@ -30,33 +30,3 @@ export const toRupiah = (subject) => {
   const rupiah = subject.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
   return `${rupiah}`;
 };
-
-export const displayDate = (date) => {
-  const months = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
-  ];
-  const splited = date.split(" ");
-  return `${splited[0]} ${months[Number(splited[1])]} ${splited[2]}`;
-};
-
-export const findValueInObject = (obj, select) => {
-  const arr = Object.values(obj);
-  const max = Math.max(...arr);
-  const min = Math.min(...arr);
-  if (select === "max") {
-    return max;
-  } else {
-    return min;
-  }
-};

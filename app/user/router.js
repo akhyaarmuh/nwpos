@@ -1,20 +1,18 @@
 import express from "express";
-const route = express.Router();
 import {
   login,
   verifyLogin,
-  getUserById,
   logout,
+  getUserById,
   updateUserById,
-  // createUser,
-  // getAllUser,
 } from "./controller.js";
+
+const route = express.Router();
 
 route.post("/login", login);
 route.get("/verify-login", verifyLogin);
+route.delete("/logout", logout);
 route.get("/:id", getUserById);
 route.patch("/:id", updateUserById);
-route.delete("/logout", logout);
-// route.post("/", createUser);
 
 export default route;

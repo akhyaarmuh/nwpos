@@ -22,10 +22,6 @@ export const getAllCustomer = async (req, res) => {
 
 export const deleteCustomerById = async (req, res) => {
   try {
-    // const using = await Product.findOne({ category: req.params.id });
-    // if (using)
-    //   return res.status(405).json({ message: "Kategori sedang digunakan" });
-
     await Customer.findByIdAndDelete(req.params.id);
     res.sendStatus(200);
   } catch (error) {

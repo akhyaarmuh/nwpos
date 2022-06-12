@@ -9,7 +9,8 @@ export const getAllSupplier = async (req, res) => {
     const suppliers = await Supplier.find()
       .sort("-createdAt")
       .limit(limit)
-      .skip(limit * page);
+      .skip(limit * page)
+      .select("name noHp address bank");
 
     const prev = page === 0 ? null : (page - 1).toString();
     const next = page + 1 > allPage ? null : (page + 1).toString();
@@ -21,10 +22,6 @@ export const getAllSupplier = async (req, res) => {
 
 export const deleteSupplierById = async (req, res) => {
   try {
-    // const using = await Product.findOne({ category: req.params.id });
-    // if (using)
-    //   return res.status(405).json({ message: "Kategori sedang digunakan" });
-
     await Supplier.findByIdAndDelete(req.params.id);
     res.sendStatus(200);
   } catch (error) {

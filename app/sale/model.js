@@ -6,12 +6,6 @@ const saleSchema = new mongoose.Schema(
       type: String,
       required: [true],
     },
-    cart: [
-      {
-        type: Object,
-        required: [true],
-      },
-    ],
     date: {
       type: String,
       required: [true],
@@ -20,20 +14,24 @@ const saleSchema = new mongoose.Schema(
       type: String,
       required: [true],
     },
-    profit: {
-      type: Number,
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+    },
+    cart: {
+      type: Array,
       required: [true],
     },
     total: {
       type: Number,
       required: [true],
     },
+    profit: {
+      type: Number,
+      required: [true],
+    },
     debt: {
       type: Number,
-    },
-    customer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",
     },
     payHistory: {
       type: Array,

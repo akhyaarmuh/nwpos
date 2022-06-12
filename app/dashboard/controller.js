@@ -32,9 +32,6 @@ export const getAll = async (req, res) => {
       },
     });
   } catch (error) {
-    if (error)
-      res
-        .status(500)
-        .json({ message: error.message || "Internal server error" });
+    res.status(500).json({ message: error.message || "Internal server error" });
   }
 };

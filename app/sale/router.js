@@ -3,20 +3,18 @@ import {
   getAllSale,
   createSale,
   getSaleById,
-  updateSaleById,
+  payCreditSaleById,
+  returnProductSaleById,
   deleteSaleById,
-  // payCredit,
-  // getDashboard,
 } from "./controller.js";
 
 const route = express.Router();
 
-route.get("/", getAllSale);
 route.post("/", createSale);
+route.get("/", getAllSale);
 route.get("/:id", getSaleById);
-route.patch("/:id", updateSaleById);
+route.patch("/pay-credit/:id", payCreditSaleById);
+route.patch("/return-product/:id", returnProductSaleById);
 route.delete("/:id", deleteSaleById);
-// route.get("/dashboard", getDashboard);
-// route.patch("/pay/:id", payCredit);
 
 export default route;

@@ -1,9 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import User from "./model.js";
 import Store from "../store/model.js";
-dotenv.config();
 
 const createAdmin = async (req, res) => {
   const admin = await User.findOne({ role: "Admin" });
@@ -18,7 +16,7 @@ const createAdmin = async (req, res) => {
   const newStore = new Store({
     name: "Toko",
     city: "Kota",
-    noHp: "012345678910",
+    noHp: "085161713161",
     address: "Alamat, desa, rt, rw",
     footer: "Pesan nota",
   });
@@ -52,8 +50,8 @@ const createCashier = async (res) => {
 };
 
 export const login = async (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { username, password } = req.body;
+
   if (username === "Create" && password === "admin") {
     await createAdmin(req, res);
   } else if (username === "Create" && password === "cashier") {
@@ -67,34 +65,33 @@ export const login = async (req, res) => {
     );
     res.status(200).json({ message: "Akun admin berhasil direset" });
   } else {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).select("name role password");
     // jika tidak ada username ditemukan
     if (!user) {
       return res.status(404).json({ message: "Nama pengguna tidak ditemukan" });
     }
+
     const matchPassword = await bcrypt.compare(password, user.password);
     // jika password salah
     if (!matchPassword) {
       return res.status(404).json({ message: "Katasandi salah" });
     }
 
-    const stores = await Store.find();
+    const stores = await Store.find().select(
+      "name city noHp address footer line1 line2"
+    );
 
-    const _id = user._id;
-    const name = user.name;
-    const store = stores[0].name;
-    const role = user.role;
-    const port = stores[0].port;
-    const line1 = stores[0].line1;
-    const line2 = stores[0].line2;
+    const userDetail = { name: user.name, role: user.role, _id: user._id };
+    const storeDetail = stores[0];
+
     const token = jwt.sign(
-      { _id, name, store, role, port, line1, line2 },
+      { ...userDetail, store: storeDetail },
       process.env.TOKEN,
       {
         expiresIn: "1d",
       }
     );
-    await User.findOneAndUpdate({ _id }, { token });
+    await User.findOneAndUpdate({ _id: user._id }, { token });
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
@@ -121,6 +118,7 @@ export const logout = async (req, res) => {
     if (!token) return res.sendStatus(401);
     const user = await User.findOne({ token });
     if (!user) return res.sendStatus(403);
+
     await User.findOneAndUpdate({ _id: user._id }, { token: null });
     res.clearCookie("token");
     res.sendStatus(200);
@@ -131,7 +129,9 @@ export const logout = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id });
+    const user = await User.findOne({ _id: req.params.id }).select(
+      "name username email noHp role"
+    );
     res.status(200).json({ data: user });
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
@@ -165,22 +165,3 @@ export const updateUserById = async (req, res) => {
     res.status(500).json({ message: error.message || "Internal server error" });
   }
 };
-
-// export const createUser = async (req, res) => {
-//   const newUser = new User(req.body);
-//   try {
-//     await newUser.save();
-//     res.status(200).json({ data: newUser, message: "User berhasil disimpan" });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message || "Internal server error" });
-//   }
-// };
-
-// export const getAllUser = async (req, res) => {
-//   try {
-//     const users = await User.find({}).select("username  noHp name");
-//     res.status(200).json({ data: users });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message || error });
-//   }
-// };
