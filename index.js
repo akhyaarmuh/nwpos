@@ -1,8 +1,12 @@
 import ip from "ip";
 import cors from "cors";
+import open from "open";
 import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
+import handleReport from "./utilities/report.js";
+import path from "path";
+import { fileURLToPath } from "url";
 import "./config/Database.js";
 
 import handleDisplay from "./utilities/Displayer.js";
@@ -21,11 +25,20 @@ import unitRouter from "./app/unit/router.js";
 import userRouter from "./app/user/router.js";
 dotenv.config();
 
+try {
+  await handleReport();
+} catch (error) {
+  console.error(error);
+}
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(express.static(path.join(dirname, "client", "build")));
 
 app.post(`/${process.env.API_VERSION}/display`, handleDisplay);
 app.post(`/${process.env.API_VERSION}/print`, handlePrint);
@@ -42,8 +55,13 @@ app.use(`/${process.env.API_VERSION}/supplier`, supplierRouter);
 app.use(`/${process.env.API_VERSION}/unit`, unitRouter);
 app.use(`/${process.env.API_VERSION}/user`, userRouter);
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(dirname, "client", "build", "index.html"));
+});
+
 app.listen(process.env.PORT, () => {
   console.log("Server running on: http://localhost:" + process.env.PORT);
+  open(`http://localhost:${process.env.PORT}`, { app: "chrome" });
 });
 
 app.listen(process.env.PORT, ip.address(), () => {
