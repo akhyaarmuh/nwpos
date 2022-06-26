@@ -11,6 +11,8 @@ export const createProduct = async (req, res) => {
     return res.status(400).json({ message: "Kode produk sudah digunakan" });
 
   const payload = { ...req.body };
+  payload.name = payload.name.trim();
+  payload.barcode = payload.barcode.trim();
   if (req.body.modal === 0 || req.body.stock === 0) {
     payload.modal = 0;
     payload.stock = 0;
@@ -51,9 +53,11 @@ export const getProductByBarcode = async (req, res) => {
 };
 
 export const getAllProduct = async (req, res) => {
-  const limit = Number(req.query.limit) || 20;
   const page = Number(req.query.page) || 0;
+  const limit = Number(req.query.limit) || 20;
   const keyword = req.query.keyword || "";
+  const offset = limit * page;
+  const sort = req.query.sort || "-createdAt";
 
   const query = {
     $or: [
@@ -63,21 +67,19 @@ export const getAllProduct = async (req, res) => {
   };
 
   try {
-    let allPage = await Product.find(query);
-    allPage = Math.ceil(allPage.length / limit) - 1;
-    const products = await Product.find(query)
+    const products = await Product.find(query);
+    const rows = products.length;
+    const allPage = Math.ceil(rows / limit);
+    const data = await Product.find(query)
       .populate("category units")
-      .sort("-createdAt")
+      .sort(sort)
       .limit(limit)
-      .skip(limit * page)
+      .skip(offset)
       .select(
         "barcode name category desc units modal stock unit price salePrice"
       );
 
-    const prev = page === 0 ? null : (page - 1).toString();
-    const next = page + 1 > allPage ? null : (page + 1).toString();
-
-    res.status(200).json({ data: products, pages: { prev, next, page } });
+    res.status(200).json({ data, page, limit, rows, allPage });
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
   }
@@ -94,6 +96,8 @@ export const updateProductById = async (req, res) => {
     if (payload.modalIsUpdate) {
       payload.modal = Math.ceil(modal / findMaxValueInObject(payload.unit));
     }
+    payload.name = payload.name.trim();
+    payload.barcode = payload.barcode.trim();
 
     await Product.findOneAndUpdate({ _id: req.params.id }, payload);
     res.sendStatus(200);

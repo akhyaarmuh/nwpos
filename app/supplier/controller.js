@@ -1,20 +1,12 @@
 import Supplier from "./model.js";
 
 export const getAllSupplier = async (req, res) => {
-  const limit = Number(req.query.limit) || 20;
-  const page = Number(req.query.page) || 0;
-
   try {
-    const allPage = Math.ceil((await Supplier.count()) / limit) - 1;
     const suppliers = await Supplier.find()
       .sort("-createdAt")
-      .limit(limit)
-      .skip(limit * page)
       .select("name noHp address bank");
 
-    const prev = page === 0 ? null : (page - 1).toString();
-    const next = page + 1 > allPage ? null : (page + 1).toString();
-    res.status(200).json({ data: suppliers, pages: { prev, next } });
+    res.status(200).json({ data: suppliers });
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
   }

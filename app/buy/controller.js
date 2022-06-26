@@ -29,22 +29,19 @@ export const createBuy = async (req, res) => {
 };
 
 export const getAllBuy = async (req, res) => {
-  const limit = Number(req.query.limit) || 20;
-  const page = Number(req.query.page) || 0;
+  // const limit = Number(req.query.limit) || 20;
+  // const page = Number(req.query.page) || 0;
 
   try {
-    let allPage = await Buy.find();
-    allPage = Math.ceil(allPage.length / limit) - 1;
+    // let allPage = await Buy.find();
+    // allPage = Math.ceil(allPage.length / limit) - 1;
     const buys = await Buy.find()
       .populate("supplier")
       .sort("-createdAt")
-      .limit(limit)
-      .skip(limit * page)
       .select("supplier cart date time total debt payHistory");
-
-    const prev = page === 0 ? null : (page - 1).toString();
-    const next = page + 1 > allPage ? null : (page + 1).toString();
-    res.status(200).json({ data: buys, pages: { prev, next, page } });
+    // .limit(limit)
+    // .skip(limit * page)
+    res.status(200).json({ data: buys });
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
   }

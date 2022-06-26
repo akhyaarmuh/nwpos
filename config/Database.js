@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 try {
-  await mongoose.connect(process.env.MONGODB_URI);
+  mongoose.connect(process.env.MONGODB_URI);
   console.log("Database Connected");
 } catch (error) {
   if (error) {

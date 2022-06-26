@@ -1,5 +1,7 @@
+import dotenv from "dotenv";
 import escpos from "escpos";
 import USB from "escpos-usb";
+dotenv.config();
 
 import { toRupiah } from "./index.js";
 
@@ -59,11 +61,13 @@ const printDetailProduct = (printer, cart) => {
   cart.forEach((product) => {
     let str = "";
     let space = "";
-    str = toRupiah(product.qty) + " X " + toRupiah(product.priceSelected);
+    const ex = process.env.PRINTER_ICON ? " × " : " X ";
+    const leng = process.env.PRINTER_ICON ? 31 : 32;
+    str = toRupiah(product.qty) + ex + toRupiah(product.priceSelected);
 
     for (
       let i = 0;
-      i < 32 - (str.length + toRupiah(product.total).length);
+      i < leng - (str.length + toRupiah(product.total).length);
       i++
     ) {
       space = space + ` `;

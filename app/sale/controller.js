@@ -34,7 +34,12 @@ const getNewCart = (productReturn, oldCart) => {
   } else {
     return oldCart.map((pro) => {
       if (pro._id === productReturn._id) {
-        return { ...pro, qty: pro.qtyInput };
+        return {
+          ...pro,
+          qty: productReturn.qtyInput,
+          qtyInput: productReturn.qtyInput,
+          total: productReturn.qtyInput * productReturn.price,
+        };
       }
       return pro;
     });
@@ -46,6 +51,8 @@ export const getAllSale = async (req, res) => {
   const name = req.query.name;
   const limit = Number(req.query.limit) || 20;
   const page = Number(req.query.page) || 0;
+  const offset = limit * page;
+  const sort = req.query.sort || "-createdAt";
 
   const query = {};
   const and = [];
@@ -65,18 +72,17 @@ export const getAllSale = async (req, res) => {
   if (and.length > 0) query.$and = and;
 
   try {
-    let allPage = await Sale.find(query);
-    allPage = Math.ceil(allPage.length / limit) - 1;
-    const sales = await Sale.find(query)
+    const sales = await Sale.find(query);
+    const rows = sales.length;
+    const allPage = Math.ceil(rows / limit);
+    const data = await Sale.find(query)
       .populate("customer")
-      .select("date time customer debt total")
-      .sort("-createdAt")
+      .sort(sort)
       .limit(limit)
-      .skip(limit * page);
+      .skip(offset)
+      .select("date time customer debt total");
 
-    const prev = page === 0 ? null : (page - 1).toString();
-    const next = page + 1 > allPage ? null : (page + 1).toString();
-    res.status(200).json({ data: sales, pages: { prev, next, page } });
+    res.status(200).json({ data, page, limit, rows, allPage });
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
   }
