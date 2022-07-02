@@ -144,8 +144,8 @@ export const returnProductSaleById = async (req, res) => {
 
     if (newCart.length === 0) {
       await Sale.findByIdAndDelete(req.params.id);
-      // tambah stok produk
       res.sendStatus(200);
+      // tambah stok produk
       await tambahStok(product._id, qtyReturn, allPriceReturn);
       return;
     }

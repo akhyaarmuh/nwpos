@@ -63,6 +63,7 @@ const printDetailProduct = (printer, cart) => {
     let space = "";
     const ex = process.env.PRINTER_ICON ? " × " : " X ";
     const leng = process.env.PRINTER_ICON ? 31 : 32;
+    const style = process.env.PRINTER_BRAND ? "NORMAL" : "B";
     str = toRupiah(product.qty) + ex + toRupiah(product.priceSelected);
 
     for (
@@ -75,7 +76,7 @@ const printDetailProduct = (printer, cart) => {
 
     printer
       .align("LT")
-      .style("B")
+      .style(style)
       .text(product.name)
       .style("NORMAL")
       .text(str + space + toRupiah(product.total));
@@ -84,8 +85,9 @@ const printDetailProduct = (printer, cart) => {
 };
 
 const printDetailPayment = (printer, total, pay, debt, cashback) => {
+  const style = process.env.PRINTER_BRAND ? "NORMAL" : "B";
   printer
-    .style("B")
+    .style(style)
     .text(printHasil({ name: "total", value: toRupiah(total) }))
     .text(printHasil({ name: "bayar", value: toRupiah(pay) }));
 

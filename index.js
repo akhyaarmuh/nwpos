@@ -11,8 +11,9 @@ import "./config/Database.js";
 
 import handleDisplay from "./utilities/Displayer.js";
 import handlePrint from "./utilities/Printer.js";
-// import beutifyProduct from "./utilities/beutifyProduct.js";
+// import beutifyProduct, {markProduct} from "./utilities/beutifyProduct.js";
 // beutifyProduct();
+// markProduct();
 
 import buyRouter from "./app/buy/router.js";
 import categoryRouter from "./app/category/router.js";
@@ -78,3 +79,4 @@ app.listen(process.env.PORT, ip.address(), () => {
 // MONGODB_URI= mongodb://127.0.0.1:27017/nwpos
 // API_VERSION=api/v2
 // PRINTER_ICON = true;
+// PRINTER_BRAND = eppos;

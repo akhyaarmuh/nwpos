@@ -3,5 +3,3 @@ title Update nwpos
 
 git fetch
 git pull
-
-pause>nul

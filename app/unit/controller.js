@@ -51,7 +51,7 @@ export const updateUnitById = async (req, res) => {
     if (unit && unit._id.toString() !== _id)
       return res.status(400).json({ message: `Satuan ${name} sudah ada` });
 
-    // await Unit.findOneAndUpdate({ _id }, { name });
+    await Unit.findOneAndUpdate({ _id }, { name });
     res.sendStatus(200);
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
