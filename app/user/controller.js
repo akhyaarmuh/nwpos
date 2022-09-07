@@ -1,7 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
 import User from "./model.js";
 import Store from "../store/model.js";
+import backup from "../../utilities/backup.js";
 
 const createAdmin = async (req, res) => {
   const admin = await User.findOne({ role: "Admin" });
@@ -119,6 +121,7 @@ export const logout = async (req, res) => {
     const user = await User.findOne({ token });
     if (!user) return res.sendStatus(403);
 
+    backup(true);
     await User.findOneAndUpdate({ _id: user._id }, { token: null });
     res.clearCookie("token");
     res.sendStatus(200);

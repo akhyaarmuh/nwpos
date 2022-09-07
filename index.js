@@ -1,19 +1,18 @@
 import ip from "ip";
 import cors from "cors";
+import path from "path";
 import open from "open";
 import dotenv from "dotenv";
 import express from "express";
-import cookieParser from "cookie-parser";
-import handleReport from "./utilities/report.js";
-import path from "path";
 import { fileURLToPath } from "url";
+import cookieParser from "cookie-parser";
+
 import "./config/Database.js";
 
-import handleDisplay from "./utilities/Displayer.js";
+import backup from "./utilities/backup.js";
+import handleReport from "./utilities/report.js";
 import handlePrint from "./utilities/Printer.js";
-// import beutifyProduct, {markProduct} from "./utilities/beutifyProduct.js";
-// beutifyProduct();
-// markProduct();
+import handleDisplay from "./utilities/Displayer.js";
 
 import buyRouter from "./app/buy/router.js";
 import categoryRouter from "./app/category/router.js";
@@ -28,14 +27,15 @@ import unitRouter from "./app/unit/router.js";
 import userRouter from "./app/user/router.js";
 dotenv.config();
 
+export const dirname = path.dirname(fileURLToPath(import.meta.url));
+const app = express();
+
+backup();
 try {
   await handleReport();
 } catch (error) {
   console.error(error);
 }
-
-const dirname = path.dirname(fileURLToPath(import.meta.url));
-const app = express();
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());

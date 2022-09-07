@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
+    "restore": "node utilities/restore.js",
     "dev": "nodemon ."
   },
   "keywords": [
