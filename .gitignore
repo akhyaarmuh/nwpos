@@ -1,3 +1,5 @@
+utilities/backup/*
+utilities/nwpos.gzip
+
 req.rest
 .env
-nwpos.gzip

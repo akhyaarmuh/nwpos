@@ -1,13 +1,14 @@
-// import path from "path";
+import path from "path";
+import { fileURLToPath } from "url";
 import { spawn } from "child_process";
-// import { dirname } from "../index.js";
 
 // mongorestore --db=nwpos --archive=./nwpos.gzip --gzip
 
-const DB_NAME = "nwpos";
-const ARCHIVE_PATH = "C:/nwdev/nwpos/nwpos.gzip";
-
 const restore = () => {
+  const dirname = path.dirname(fileURLToPath(import.meta.url));
+  const DB_NAME = "nwpos";
+  const ARCHIVE_PATH = path.join(dirname, `${DB_NAME}.gzip`);
+
   const child = spawn("mongorestore", [
     `--db=${DB_NAME}`,
     `--archive=${ARCHIVE_PATH}`,

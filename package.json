@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "restore": "node utilities/restore.js",
-    "dev": "nodemon ."
+    "dev": "nodemon .",
+    "restore": "node utilities/restore.js"
   },
   "keywords": [
     "pos",

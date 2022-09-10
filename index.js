@@ -27,7 +27,7 @@ import unitRouter from "./app/unit/router.js";
 import userRouter from "./app/user/router.js";
 dotenv.config();
 
-export const dirname = path.dirname(fileURLToPath(import.meta.url));
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 backup();

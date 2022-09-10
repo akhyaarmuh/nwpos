@@ -1,14 +1,27 @@
+import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import { spawn } from "child_process";
-import { dirname } from "../index.js";
 
 // mongodump --db=nwpos --archive=./nwpos.gzip --gzip
 
-const DB_NAME = "nwpos";
-
 export default (message = false) => {
+  const dirname = path.dirname(fileURLToPath(import.meta.url));
+  const [bln, tgl, thn] = getDate();
+  const DB_NAME = "nwpos";
   const ARCHIVE_PATH = path.join(dirname, `${DB_NAME}.gzip`);
+  const ARCHIVE_PATH2 = path.join(
+    dirname,
+    "backup",
+    `${bln}-${tgl}-${thn}.gzip`
+  );
 
+  backup(DB_NAME, ARCHIVE_PATH);
+  backup(DB_NAME, ARCHIVE_PATH2, message);
+  deleteOldBackup(dirname);
+};
+
+const backup = (DB_NAME, ARCHIVE_PATH, message) => {
   const child = spawn("mongodump", [
     `--db=${DB_NAME}`,
     `--archive=${ARCHIVE_PATH}`,
@@ -33,4 +46,35 @@ export default (message = false) => {
       if (message) console.log("Backup is successfull ✅");
     }
   });
+};
+
+const getDate = () => {
+  const date = new Date();
+  const tgl = date.getDate();
+  const bln = date.getMonth();
+  const thn = date.getFullYear();
+  return [bln, tgl, thn];
+};
+
+const deleteOldBackup = (dirname) => {
+  const [bln] = getDate();
+  const files = fs.readdirSync(`${dirname}/backup`);
+
+  const thisMonth = files.filter((file) => {
+    const month = file.split("-");
+    if (month[0] == bln) return file;
+  });
+
+  if (thisMonth.length > 1) {
+    const oldMonth = files.filter((file) => {
+      const month = file.split("-");
+      if (month[0] != bln) return file;
+    });
+
+    if (oldMonth > 0) {
+      oldMonth.forEach((old) => {
+        fs.rmSync(`${dirname}/backup/${old}`);
+      });
+    }
+  }
 };
