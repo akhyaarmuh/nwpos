@@ -1,4 +1,4 @@
-utilities/backup/*
+/utilities/backup/*
 utilities/nwpos.gzip
 
 req.rest
