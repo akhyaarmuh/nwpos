@@ -1,4 +1,5 @@
-/utilities/backup/*
+utilities/backup/*
+!utilities/backup/.gitkeep 
 utilities/nwpos.gzip
 
 req.rest
