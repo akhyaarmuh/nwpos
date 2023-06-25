@@ -67,10 +67,10 @@ app.listen(process.env.PORT, () => {
   open(`http://localhost:${process.env.PORT}`, { app: "chrome" });
 });
 
-app.listen(process.env.PORT, ip.address(), () => {
-  console.log(`Server running on: http://${ip.address()}:${process.env.PORT}`);
-  console.log("App started");
-});
+// app.listen(process.env.PORT, ip.address(), () => {
+//   console.log(`Server running on: http://${ip.address()}:${process.env.PORT}`);
+//   console.log("App started");
+// });
 
 // INI ADALAH ENVIRONMENT .ENV
 
